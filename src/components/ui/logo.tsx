@@ -1,16 +1,27 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 export function Logo({ className, dark = false }: { className?: string; dark?: boolean }) {
   return (
     <a
       href="#"
-      className={cn(
-        "font-heading text-2xl font-bold tracking-tight transition-colors",
-        dark ? "text-text-on-dark" : "text-text-primary",
-        className
-      )}
+      className={cn("flex items-center gap-2 transition-opacity hover:opacity-80", className)}
     >
-      Fig<span className="text-accent">.</span>
+      <Image
+        src="/Sliced Fig Logo with Cartoon Style.png"
+        alt="Fig"
+        width={36}
+        height={36}
+        className=""
+      />
+      <span
+        className={cn(
+          "font-heading text-xl font-bold tracking-tight",
+          dark ? "text-text-on-dark" : "text-text-primary"
+        )}
+      >
+        Fig
+      </span>
     </a>
   );
 }
