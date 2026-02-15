@@ -21,6 +21,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://fig-xi.vercel.app"),
   title: "Fig | Digital Transformation Agency",
   description:
     "We help companies digitise, modernise, and build custom digital systems to improve efficiency, drive innovation, and increase ROI.",
@@ -34,6 +35,14 @@ export const metadata: Metadata = {
       "We help companies digitise, modernise, and build custom digital systems to improve efficiency, drive innovation, and increase ROI.",
     type: "website",
     locale: "en_GB",
+    images: [
+      {
+        url: "/logo.png",
+        width: 512,
+        height: 512,
+        alt: "Fig Logo",
+      },
+    ],
   },
 };
 
