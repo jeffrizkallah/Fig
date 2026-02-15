@@ -5,7 +5,7 @@ export function Logo({ className, dark = false }: { className?: string; dark?: b
   return (
     <a
       href="#"
-      className={cn("flex items-center gap-2 transition-opacity hover:opacity-80", className)}
+      className={cn("flex items-center gap-0 transition-opacity hover:opacity-80", className)}
     >
       <Image
         src="/Sliced Fig Logo with Cartoon Style.png"

@@ -31,58 +31,62 @@ export function Header() {
   }, [mobileOpen]);
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-bg-primary/80 backdrop-blur-lg border-b border-border shadow-sm"
-          : "bg-transparent"
-      )}
-    >
-      <Container>
-        <nav className="flex items-center justify-between h-20">
-          <Logo />
+    <>
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          mobileOpen
+            ? "bg-bg-primary border-b border-border shadow-sm"
+            : scrolled
+              ? "bg-bg-primary/80 backdrop-blur-lg border-b border-border shadow-sm"
+              : "bg-transparent"
+        )}
+      >
+        <Container>
+          <nav className="flex items-center justify-between h-20">
+            <Logo />
 
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "relative text-sm font-medium transition-colors duration-200",
-                  active === item.href.slice(1)
-                    ? "text-accent"
-                    : "text-text-secondary hover:text-text-primary"
-                )}
-              >
-                {item.label}
-                {active === item.href.slice(1) && (
-                  <motion.div
-                    layoutId="activeNav"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent rounded-full"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  />
-                )}
-              </a>
-            ))}
-            <Button href="#contact" size="default">
-              Book a Chat
-            </Button>
-          </div>
+            {/* Desktop nav */}
+            <div className="hidden md:flex items-center gap-8">
+              {NAV_ITEMS.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "relative text-sm font-medium transition-colors duration-200",
+                    active === item.href.slice(1)
+                      ? "text-accent"
+                      : "text-text-secondary hover:text-text-primary"
+                  )}
+                >
+                  {item.label}
+                  {active === item.href.slice(1) && (
+                    <motion.div
+                      layoutId="activeNav"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent rounded-full"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                </a>
+              ))}
+              <Button href="#contact" size="default">
+                Book a Chat
+              </Button>
+            </div>
 
-          {/* Mobile toggle */}
-          <button
-            className="md:hidden p-2 text-text-primary"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </nav>
-      </Container>
+            {/* Mobile toggle */}
+            <button
+              className="md:hidden p-2 text-text-primary"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </nav>
+        </Container>
+      </header>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — rendered outside <header> to avoid backdrop-filter creating a containing block for fixed positioning */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -114,6 +118,6 @@ export function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }

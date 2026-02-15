@@ -9,10 +9,17 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { contactSchema, type ContactFormData } from "@/lib/schemas";
 import { submitContact } from "@/actions/contact";
 import { fadeInUp } from "@/lib/animations";
+import {
+  COMPANY_SIZE_OPTIONS,
+  ANNUAL_REVENUE_OPTIONS,
+  PROJECT_BUDGET_OPTIONS,
+  SERVICES_INTEREST_OPTIONS,
+} from "@/lib/constants";
 
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
@@ -45,7 +52,7 @@ export function ContactSection() {
           subtitle="Tell us what you're working with and where you want to go. We'll figure out the rest together."
         />
 
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
             {/* Form */}
             <motion.div
@@ -77,14 +84,26 @@ export function ContactSection() {
                   onSubmit={handleSubmit(onSubmit)}
                   className="bg-white rounded-2xl border border-border p-8 space-y-6"
                 >
+                  {/* Name row */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <Input
-                      label="Name"
-                      id="name"
-                      placeholder="Your name"
-                      {...register("name")}
-                      error={errors.name?.message}
+                      label="First Name"
+                      id="firstName"
+                      placeholder="John"
+                      {...register("firstName")}
+                      error={errors.firstName?.message}
                     />
+                    <Input
+                      label="Last Name"
+                      id="lastName"
+                      placeholder="Doe"
+                      {...register("lastName")}
+                      error={errors.lastName?.message}
+                    />
+                  </div>
+
+                  {/* Email & Role */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <Input
                       label="Email"
                       id="email"
@@ -93,18 +112,78 @@ export function ContactSection() {
                       {...register("email")}
                       error={errors.email?.message}
                     />
+                    <Input
+                      label="Role"
+                      id="role"
+                      placeholder="e.g. CEO, CTO, Marketing Director"
+                      {...register("role")}
+                      error={errors.role?.message}
+                    />
                   </div>
-                  <Input
-                    label="Company (optional)"
-                    id="company"
-                    placeholder="Your company name"
-                    {...register("company")}
-                    error={errors.company?.message}
-                  />
+
+                  {/* Company & Website */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <Input
+                      label="Company"
+                      id="company"
+                      placeholder="Your company name"
+                      {...register("company")}
+                      error={errors.company?.message}
+                    />
+                    <Input
+                      label="Company Website (optional)"
+                      id="companyWebsite"
+                      placeholder="https://yourcompany.com"
+                      {...register("companyWebsite")}
+                      error={errors.companyWebsite?.message}
+                    />
+                  </div>
+
+                  {/* Company Size & Revenue */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <Select
+                      label="Company Size"
+                      id="companySize"
+                      placeholder="Select company size"
+                      options={COMPANY_SIZE_OPTIONS}
+                      {...register("companySize")}
+                      error={errors.companySize?.message}
+                    />
+                    <Select
+                      label="Annual Revenue (optional)"
+                      id="annualRevenue"
+                      placeholder="Select annual revenue"
+                      options={ANNUAL_REVENUE_OPTIONS}
+                      {...register("annualRevenue")}
+                      error={errors.annualRevenue?.message}
+                    />
+                  </div>
+
+                  {/* Budget & Services */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <Select
+                      label="Project Budget"
+                      id="projectBudget"
+                      placeholder="Select project budget"
+                      options={PROJECT_BUDGET_OPTIONS}
+                      {...register("projectBudget")}
+                      error={errors.projectBudget?.message}
+                    />
+                    <Select
+                      label="What services are you interested in?"
+                      id="servicesInterested"
+                      placeholder="Select a service"
+                      options={SERVICES_INTEREST_OPTIONS}
+                      {...register("servicesInterested")}
+                      error={errors.servicesInterested?.message}
+                    />
+                  </div>
+
+                  {/* Message */}
                   <Textarea
-                    label="Message"
+                    label="Additional Info / Message (optional)"
                     id="message"
-                    placeholder="Tell us about your business and what you'd like to improve..."
+                    placeholder="Tell us more about your project, timeline, or any specific requirements..."
                     {...register("message")}
                     error={errors.message?.message}
                   />

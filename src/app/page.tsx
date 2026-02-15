@@ -1,7 +1,6 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/sections/hero-section";
-import { FigEvolutionSection } from "@/components/sections/fig-evolution-section";
 import { ServicesSection } from "@/components/sections/services-section";
 import { ProcessSection } from "@/components/sections/process-section";
 import { WhyFigSection } from "@/components/sections/why-fig-section";
@@ -13,7 +12,6 @@ export default function Home() {
       <Header />
       <main>
         <HeroSection />
-        <FigEvolutionSection />
         <ServicesSection />
         <ProcessSection />
         <WhyFigSection />
