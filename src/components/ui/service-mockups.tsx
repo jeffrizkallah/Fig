@@ -93,7 +93,7 @@ function DispatchDashboardMockup({ className }: MockupProps) {
           </div>
 
           {/* Data rows */}
-          {rows.map((row) => (
+          {rows.map((row, i) => (
             <div
               key={row.name}
               className="flex items-center gap-2 py-1"
@@ -107,6 +107,7 @@ function DispatchDashboardMockup({ className }: MockupProps) {
               <div className="ml-auto flex items-center gap-1">
                 <div
                   className={`w-1.5 h-1.5 rounded-full ${row.status === "active" ? "bg-accent" : "bg-accent-warm"}`}
+                  style={row.status === "active" ? { animation: `mockup-pulse 2s ease-in-out infinite ${i * 0.4}s` } : undefined}
                 />
                 <span className="text-[8px] text-text-secondary/50">
                   {row.status === "active" ? "En route" : "Pending"}
@@ -167,6 +168,8 @@ function KpiDashboardMockup({ className }: MockupProps) {
                     ? "var(--accent)"
                     : "var(--accent-warm)",
                 opacity: 0.5 + (height / 100) * 0.5,
+                transformOrigin: "bottom",
+                animation: `mockup-breathe ${2.5 + i * 0.3}s ease-in-out infinite`,
               }}
             />
           ))}
@@ -183,7 +186,12 @@ function InvoiceExtractionMockup({ className }: MockupProps) {
     <MockupShell className={className}>
       <div className="p-3 h-[148px] flex gap-3">
         {/* Invoice document */}
-        <div className="flex-1 rounded border border-border/40 bg-white p-2.5 shadow-sm">
+        <div className="flex-1 rounded border border-border/40 bg-white p-2.5 shadow-sm relative overflow-hidden">
+          {/* Scan line */}
+          <div
+            className="absolute left-1 right-1 h-[1.5px] bg-accent/30 rounded-full pointer-events-none"
+            style={{ animation: "mockup-scan 3s ease-in-out infinite" }}
+          />
           {/* Header */}
           <div className="flex items-center justify-between mb-2.5">
             <div className="text-[10px] font-semibold text-text-primary/70 font-heading">
@@ -291,7 +299,14 @@ function WebsiteShowcaseMockup({ className }: MockupProps) {
 
           {/* Right image area */}
           <div className="w-[40%] p-2">
-            <div className="w-full h-full rounded-lg bg-gradient-to-br from-accent/10 via-accent/5 to-accent-warm/10 border border-border/30 flex items-center justify-center">
+            <div
+              className="w-full h-full rounded-lg border border-border/30 flex items-center justify-center"
+              style={{
+                background: "linear-gradient(135deg, rgba(74,124,89,0.1) 0%, rgba(74,124,89,0.03) 30%, rgba(196,149,106,0.1) 60%, rgba(74,124,89,0.1) 100%)",
+                backgroundSize: "200% 200%",
+                animation: "mockup-gradient 4s ease-in-out infinite",
+              }}
+            >
               <svg
                 viewBox="0 0 40 40"
                 className="w-8 h-8 opacity-30"
@@ -536,7 +551,10 @@ function OnboardingPipelineMockup({ className }: MockupProps) {
                   {step.done ? (
                     <Check className="w-3.5 h-3.5 text-accent" />
                   ) : (
-                    <Clock className="w-3.5 h-3.5 text-accent-warm" />
+                    <Clock
+                      className="w-3.5 h-3.5 text-accent-warm"
+                      style={{ animation: "mockup-pulse 2s ease-in-out infinite" }}
+                    />
                   )}
                 </div>
                 <span className="text-[8px] text-text-secondary/60 text-center leading-tight">
@@ -546,7 +564,12 @@ function OnboardingPipelineMockup({ className }: MockupProps) {
 
               {/* Connector */}
               {i < steps.length - 1 && (
-                <div className="w-6 sm:w-10 h-px bg-border/50 mx-1 mb-4" />
+                <div className="w-6 sm:w-10 h-px bg-border/50 mx-1 mb-4 relative overflow-visible">
+                  <div
+                    className="absolute top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-accent/50"
+                    style={{ animation: `mockup-dot-travel 2s ease-in-out infinite ${i * 0.5}s` }}
+                  />
+                </div>
               )}
             </div>
           ))}
@@ -556,9 +579,14 @@ function OnboardingPipelineMockup({ className }: MockupProps) {
         <div className="mt-3 mx-4">
           <div className="h-1 rounded-full bg-border/30 overflow-hidden">
             <div
-              className="h-full rounded-full bg-accent/50"
+              className="h-full rounded-full bg-accent/50 relative overflow-hidden"
               style={{ width: "75%" }}
-            />
+            >
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                style={{ animation: "mockup-shimmer 2.5s ease-in-out infinite" }}
+              />
+            </div>
           </div>
           <div className="text-[7px] text-text-secondary/40 text-right mt-0.5">
             75% complete

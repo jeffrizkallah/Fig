@@ -5,6 +5,15 @@ import {
   Globe,
   Link2,
   Workflow,
+  MessageCircle,
+  Search,
+  Wrench,
+  GraduationCap,
+  LifeBuoy,
+  Zap,
+  ArrowRight,
+  Users,
+  TrendingUp,
   type LucideIcon,
 } from "lucide-react";
 
@@ -167,36 +176,42 @@ export interface ProcessStep {
   number: string;
   title: string;
   description: string;
+  icon: LucideIcon;
 }
 
 export const PROCESS_STEPS: ProcessStep[] = [
   {
     number: "01",
     title: "Chat",
+    icon: MessageCircle,
     description:
       "We start with a conversation about your business, your goals, your challenges, and where things feel stuck.",
   },
   {
     number: "02",
     title: "Audit",
+    icon: Search,
     description:
       "We deep-dive into your current systems and workflows, identifying what can be improved, modernised, or digitised.",
   },
   {
     number: "03",
     title: "Build",
+    icon: Wrench,
     description:
       "We design and develop custom digital solutions tailored to your specific needs and processes.",
   },
   {
     number: "04",
     title: "Train",
+    icon: GraduationCap,
     description:
       "We upskill your team through hands-on courses and documentation so they feel confident with the new systems.",
   },
   {
     number: "05",
     title: "Support",
+    icon: LifeBuoy,
     description:
       "We stay with you, providing ongoing support, iteration, and optimisation as your business evolves.",
   },
@@ -236,24 +251,34 @@ export const SERVICES_INTEREST_OPTIONS = [
   { value: "not-sure", label: "Not sure yet" },
 ];
 
-export const DIFFERENTIATORS = [
+export interface Differentiator {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+}
+
+export const DIFFERENTIATORS: Differentiator[] = [
   {
     title: "Efficiency First",
+    icon: Zap,
     description:
       "We obsess over removing friction from your daily operations. Every system we build saves you time.",
   },
   {
     title: "End-to-End",
+    icon: ArrowRight,
     description:
       "From the first conversation to ongoing support, we're with you at every stage, not just a handoff.",
   },
   {
     title: "Human + AI",
+    icon: Users,
     description:
       "We build solutions that augment your team, not replace them. Technology should empower, not complicate.",
   },
   {
     title: "ROI-Driven",
+    icon: TrendingUp,
     description:
       "Every system we build earns its keep. We measure success by the time you save and the value you gain.",
   },
