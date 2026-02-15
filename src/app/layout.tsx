@@ -25,7 +25,8 @@ export const metadata: Metadata = {
   description:
     "We help companies digitise, modernise, and build custom digital systems to improve efficiency, drive innovation, and increase ROI.",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/Sliced Fig Logo with Cartoon Style.png",
+    apple: "/Sliced Fig Logo with Cartoon Style.png",
   },
   openGraph: {
     title: "Fig | Digital Transformation Agency",
