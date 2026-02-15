@@ -65,7 +65,7 @@ export function ServicesSection() {
                 </div>
               </div>
 
-              <span className="absolute bottom-4 right-5 flex items-center gap-1 text-xs text-text-secondary/40 transition-all duration-300 group-hover:text-accent group-hover:gap-1.5">
+              <span className="absolute bottom-4 right-5 flex items-center gap-1 text-xs text-accent transition-all duration-300 group-hover:gap-1.5">
                 Learn more
                 <ArrowRight className="w-3 h-3" />
               </span>
