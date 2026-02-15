@@ -12,6 +12,8 @@ export function Logo({ className, dark = false }: { className?: string; dark?: b
         alt="Fig"
         width={36}
         height={36}
+        priority
+        quality={80}
         className=""
       />
       <span

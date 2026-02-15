@@ -19,25 +19,44 @@ function HeroBackground() {
   const offsetY2 = useTransform(springY, [0, 1], [15, -15]);
 
   useEffect(() => {
+    let rafId = 0;
+    let latestX = 0.5;
+    let latestY = 0.5;
+    let scheduled = false;
+
+    const update = () => {
+      mouseX.set(latestX);
+      mouseY.set(latestY);
+      scheduled = false;
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      mouseX.set((e.clientX - rect.left) / rect.width);
-      mouseY.set((e.clientY - rect.top) / rect.height);
+      latestX = (e.clientX - rect.left) / rect.width;
+      latestY = (e.clientY - rect.top) / rect.height;
+      if (!scheduled) {
+        scheduled = true;
+        rafId = requestAnimationFrame(update);
+      }
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(rafId);
+    };
   }, [mouseX, mouseY]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden">
       {/* Soft gradient blobs */}
       <motion.div
-        style={{ x: offsetX, y: offsetY }}
+        style={{ x: offsetX, y: offsetY, willChange: "transform" }}
         className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-accent/[0.06] blur-[100px]"
       />
       <motion.div
-        style={{ x: offsetX2, y: offsetY2 }}
+        style={{ x: offsetX2, y: offsetY2, willChange: "transform" }}
         className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-accent-warm/[0.06] blur-[100px]"
       />
 

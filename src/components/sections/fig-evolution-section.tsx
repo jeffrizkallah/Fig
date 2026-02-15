@@ -122,6 +122,7 @@ export function FigEvolutionSection() {
           className="relative z-10"
           style={{
             scale: figScale,
+            willChange: "transform, filter",
             filter: useTransform(
               [glowBlur, glowOpacity],
               ([blur, opacity]) =>

@@ -11,7 +11,7 @@ export function useFlubber(
     paths,
     {
       mixer: (a: string, b: string) =>
-        interpolate(a, b, { maxSegmentLength: 1 }),
+        interpolate(a, b, { maxSegmentLength: 10 }),
     }
   );
 }
