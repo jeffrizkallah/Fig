@@ -70,10 +70,11 @@ export function HeroSection() {
           <motion.p
             {...rise(0.3)}
             animate={mounted ? { opacity: 1, y: 0 } : {}}
-            className="max-w-none sm:max-w-[46ch] text-[15px] min-[380px]:text-base sm:text-lg leading-relaxed text-text-secondary [text-wrap:nowrap] sm:[text-wrap:balance]"
+            className="max-w-none sm:max-w-[46ch] md:max-w-none text-[15px] min-[380px]:text-base sm:text-lg leading-relaxed text-text-secondary [text-wrap:nowrap] sm:[text-wrap:balance] md:[text-wrap:nowrap]"
           >
-            {/* Fixed break on phones so the subtitle sits in two lines under the
-                two-line headline, instead of the balancer spreading it to three. */}
+            {/* Phones get a fixed break so the subtitle sits in two lines under
+                the two-line headline rather than three. From md up there is room
+                for the whole sentence on one line, so the cap comes off. */}
             We find what&apos;s slowing you down,{" "}
             <br className="sm:hidden" />
             build it, and train your team to run it.
