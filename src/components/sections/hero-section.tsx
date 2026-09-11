@@ -19,8 +19,8 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="p-3 pb-0">
-      <div className="relative overflow-hidden rounded-t-[26px] bg-gradient-to-b from-[#FBFBF9] to-[#E9E9E2] min-h-[calc(100svh-12px)] flex items-end justify-center">
+    <section>
+      <div className="relative overflow-hidden bg-gradient-to-b from-[#FBFBF9] to-[#E9E9E2] min-h-svh flex items-end justify-center">
         {/* Fine vertical lines, fading in from the top */}
         <div
           aria-hidden
@@ -57,14 +57,16 @@ export function HeroSection() {
           <motion.h1
             {...rise(0.15)}
             animate={mounted ? { opacity: 1, y: 0 } : {}}
-            className="font-heading font-semibold text-5xl sm:text-6xl md:text-7xl lg:text-[80px] leading-[0.98] text-text-primary text-balance sm:[text-wrap:normal] max-w-[13ch] sm:max-w-none mx-auto"
+            className="font-heading font-semibold text-[31px] min-[400px]:text-[34px] sm:text-6xl md:text-7xl lg:text-[80px] leading-[1.04] sm:leading-[0.98] text-text-primary [text-wrap:nowrap] mx-auto"
           >
-            {/* Two fixed lines from sm up, so the break never depends on the
-                browser's text-balance heuristic. Wraps naturally on the
-                narrowest screens. */}
+            {/* Two fixed lines at every width, so the break never depends on the
+                browser's text-balance heuristic. Phones break a word later than
+                sm and up, which keeps both lines roughly even at each size. */}
             We Build The Tools{" "}
+            <br className="sm:hidden" />
+            Your{" "}
             <br className="hidden sm:block" />
-            Your Business Is <span className="text-accent">Missing.</span>
+            Business Is <span className="text-accent">Missing.</span>
           </motion.h1>
 
           <motion.p
