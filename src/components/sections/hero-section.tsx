@@ -57,15 +57,13 @@ export function HeroSection() {
           <motion.h1
             {...rise(0.15)}
             animate={mounted ? { opacity: 1, y: 0 } : {}}
-            className="font-heading font-semibold text-[31px] min-[400px]:text-[34px] sm:text-6xl md:text-7xl lg:text-[80px] leading-[1.04] sm:leading-[0.98] text-text-primary [text-wrap:nowrap] mx-auto"
+            className="font-heading font-semibold text-[29px] min-[380px]:text-[32px] min-[440px]:text-[37px] sm:text-6xl md:text-7xl lg:text-[80px] leading-[1.04] sm:leading-[0.98] text-text-primary [text-wrap:nowrap] mx-auto"
           >
-            {/* Two fixed lines at every width, so the break never depends on the
-                browser's text-balance heuristic. Phones break a word later than
-                sm and up, which keeps both lines roughly even at each size. */}
-            We Build The Tools{" "}
-            <br className="sm:hidden" />
-            Your{" "}
-            <br className="hidden sm:block" />
+            {/* One fixed break at every width, so phones get the same two-line
+                shape as desktop and it never depends on the browser's
+                text-balance heuristic. */}
+            We Build The Tools Your{" "}
+            <br />
             Business Is <span className="text-accent">Missing.</span>
           </motion.h1>
 
