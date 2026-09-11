@@ -159,10 +159,11 @@ export function ProblemSection() {
         id="problem"
         className="relative rounded-[32px] bg-bg-dark py-24 md:py-32 overflow-hidden"
       >
-        {/* Fine vertical lines, fading out at the top and bottom edges */}
+        {/* Fine vertical lines, fading out at the top and bottom edges.
+            Dimmed to match the final CTA's texture. */}
         <div
           aria-hidden
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none opacity-[0.55]"
           style={{
             backgroundImage:
               "repeating-linear-gradient(90deg, rgba(245,245,240,0.05) 0px, rgba(245,245,240,0.05) 1px, transparent 1px, transparent 5px)",
@@ -214,10 +215,11 @@ export function ProblemSection() {
       className="relative h-[420vh] rounded-[32px] bg-bg-dark"
     >
       <div className="sticky top-0 h-screen overflow-hidden rounded-[32px] bg-bg-dark">
-        {/* Fine vertical lines, fading out at the top and bottom edges */}
+        {/* Fine vertical lines, fading out at the top and bottom edges.
+            Dimmed to match the final CTA's texture. */}
         <div
           aria-hidden
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none opacity-[0.55]"
           style={{
             backgroundImage:
               "repeating-linear-gradient(90deg, rgba(245,245,240,0.05) 0px, rgba(245,245,240,0.05) 1px, transparent 1px, transparent 5px)",
