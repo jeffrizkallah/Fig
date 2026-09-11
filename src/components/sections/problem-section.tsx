@@ -44,7 +44,7 @@ const BEATS: Beat[] = [
     trail: (
       <>
         And somewhere in the back of your mind is the feeling that it should all
-        be running more smoothly than this &mdash; and no clear idea where to
+        be running more smoothly than this, and no clear idea where to
         start. Or you know exactly where to start, and no time or way to
         actually do it.
       </>
@@ -61,7 +61,7 @@ const BEATS: Beat[] = [
     trail: (
       <>
         Sometimes that means AI. More often it&apos;s a dashboard, a proper
-        system, or an automation nobody&apos;s got round to building.
+        system, or a repetitive job that should have been automated years ago.
       </>
     ),
   },
@@ -76,7 +76,7 @@ const BEATS: Beat[] = [
 ];
 
 // Scroll windows per beat: [fadeInStart, fullStart, fullEnd, fadeOutEnd].
-// Each beat is fully transparent before the next begins to appear — the
+// Each beat is fully transparent before the next begins to appear. The
 // windows must not overlap, or two beats stack on the same absolute slot
 // and the text becomes unreadable.
 const BEAT_WINDOWS: [number, number, number, number][] = [
@@ -140,7 +140,7 @@ export function ProblemSection() {
     restDelta: 0.001,
   });
 
-  // Closing line — arrives after the last beat has dimmed, then holds.
+  // Closing line: arrives after the last beat has dimmed, then holds.
   const turnOpacity = useTransform(progress, [0.86, 0.93], [0, 1]);
   const turnY = useTransform(progress, [0.86, 0.93], [22, 0]);
 
@@ -159,6 +159,20 @@ export function ProblemSection() {
         id="problem"
         className="relative rounded-[32px] bg-bg-dark py-24 md:py-32 overflow-hidden"
       >
+        {/* Fine vertical lines, fading out at the top and bottom edges */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(90deg, rgba(245,245,240,0.05) 0px, rgba(245,245,240,0.05) 1px, transparent 1px, transparent 5px)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%)",
+          }}
+        />
+
         <div
           aria-hidden
           className="absolute inset-x-0 top-0 h-80 pointer-events-none"
@@ -200,6 +214,20 @@ export function ProblemSection() {
       className="relative h-[420vh] rounded-[32px] bg-bg-dark"
     >
       <div className="sticky top-0 h-screen overflow-hidden rounded-[32px] bg-bg-dark">
+        {/* Fine vertical lines, fading out at the top and bottom edges */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(90deg, rgba(245,245,240,0.05) 0px, rgba(245,245,240,0.05) 1px, transparent 1px, transparent 5px)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%)",
+          }}
+        />
+
         {/* Warm glow from the top edge, matching the process section */}
         <div
           aria-hidden

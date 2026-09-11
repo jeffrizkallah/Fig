@@ -7,7 +7,7 @@ export const FAQS: Faq[] = [
   {
     question: "Do we have to use AI?",
     answer:
-      "No. Plenty of what we build has nothing to do with AI — a dashboard, a system replacing three spreadsheets, an automation that removes a manual step. We use AI where it genuinely helps and leave it out where it doesn't. You'll always know which is which.",
+      "No. Plenty of what we build has nothing to do with AI: a dashboard, a system replacing three spreadsheets, an automation that removes a manual step. We use AI where it genuinely helps and leave it out where it doesn't. You'll always know which is which.",
   },
   {
     question: "We're a small business. Aren't we too small for this?",
@@ -17,7 +17,7 @@ export const FAQS: Faq[] = [
   {
     question: "We've bought software before and the team never used it.",
     answer:
-      "That's the usual outcome, and it's usually because the tool was built for a generic business instead of yours. We build around how your team already works, and we stay through the part where people learn it — which is the part most companies skip.",
+      "That's the usual outcome, and it's usually because the tool was built for a generic business instead of yours. We build around how your team already works, and we stay through the part where people learn it, which is the part most companies skip.",
   },
   {
     question: "Our data is a mess and we've got nobody technical.",
@@ -38,10 +38,5 @@ export const FAQS: Faq[] = [
     question: "How long until we see something working?",
     answer:
       "Weeks, not quarters. We'd rather put something small in your hands early and improve it than disappear for six months and unveil something.",
-  },
-  {
-    question: "Do you work in Portuguese?",
-    answer:
-      "Yes. We're based in Portugal and work across Europe, in Portuguese and English.",
   },
 ];

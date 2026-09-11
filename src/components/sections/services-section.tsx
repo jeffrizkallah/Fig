@@ -28,7 +28,7 @@ export function ServicesSection() {
         <SectionHeading
           label="What We Build"
           title="What we actually build."
-          subtitle="Custom software, dashboards, automation and AI — built around the way your business already works."
+          subtitle="Custom software, dashboards, automation and AI, built around the way your business already works."
         />
 
         <motion.div

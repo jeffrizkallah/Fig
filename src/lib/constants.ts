@@ -203,7 +203,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: "Audit",
     icon: Search,
     description:
-      "We follow the work. Where it stalls, where it's typed twice, where it sits in someone's inbox. Then we show you the handful of things worth building — and the ones that aren't.",
+      "We follow the work. Where it stalls, where it's typed twice, where it sits in someone's inbox. Then we show you the handful of things worth building, and the ones that aren't.",
     when: "Weeks 1–2",
     deliverable: "A written audit with a prioritised list of what to fix first.",
     image: "/process/02-audit-v3.jpg",
@@ -223,7 +223,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: "Train",
     icon: GraduationCap,
     description:
-      "We sit with your team until it clicks. No 40-page manual nobody reads. By the end they're not using a new tool — they're just working.",
+      "We sit with your team until it clicks. No 40-page manual nobody reads. By the end they're not using a new tool. They're just working.",
     when: "Final week",
     deliverable: "Confident people and a manual they will actually open.",
     image: "/process/04-train-v3.jpg",

@@ -247,7 +247,7 @@ function EndToEndVisual() {
       {/* Vertical timeline */}
       <div className="flex-1 pl-6 pt-4 pb-1 flex flex-col">
         <div className="relative flex-1 flex flex-col justify-between gap-2">
-          {/* Connecting line — starts and ends at dot centres */}
+          {/* Connecting line: starts and ends at dot centres */}
           <motion.div
             className="absolute left-[-15px] w-[2px] bg-accent/30 origin-top"
             style={{ top: "10%", bottom: "10%" }}
@@ -548,7 +548,7 @@ function ROIVisual() {
         </motion.div>
       </div>
 
-      {/* Bar chart — taller */}
+      {/* Bar chart, taller */}
       <div className="flex-1 flex items-end gap-1.5 py-3 min-h-[100px]">
         {[25, 38, 32, 48, 42, 55, 50, 68, 62, 78, 72, 92].map((h, i) => (
           <motion.div

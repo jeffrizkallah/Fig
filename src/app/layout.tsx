@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://fig-xi.vercel.app"),
   title: "Fig | We build the tools your business is missing",
   description:
-    "We build the tools your business is missing. Software, dashboards, automation — and AI where it genuinely helps. Based in Portugal, working across Europe.",
+    "We build the tools your business is missing. Software, dashboards, automation, and AI where it genuinely helps. Based in Portugal, working across Europe.",
   icons: {
     icon: "/Sliced Fig Logo with Cartoon Style.png",
     apple: "/Sliced Fig Logo with Cartoon Style.png",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Fig | We build the tools your business is missing",
     description:
-      "We build the tools your business is missing. Software, dashboards, automation — and AI where it genuinely helps. Based in Portugal, working across Europe.",
+      "We build the tools your business is missing. Software, dashboards, automation, and AI where it genuinely helps. Based in Portugal, working across Europe.",
     type: "website",
     locale: "en_GB",
     images: [

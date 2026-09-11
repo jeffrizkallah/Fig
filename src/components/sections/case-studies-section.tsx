@@ -117,7 +117,7 @@ export function CaseStudiesSection() {
               Case studies
             </span>
             <h2 className="font-heading text-4xl md:text-5xl leading-[1.05] text-text-primary text-balance">
-              Three businesses. Three very different messes.
+              Companies we&apos;ve helped.
             </h2>
           </div>
           <p className="text-lg leading-relaxed text-text-secondary max-w-md lg:justify-self-end">

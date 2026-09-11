@@ -15,8 +15,12 @@ import {
   type ContactFormData,
 } from "@/lib/schemas";
 import { submitContact } from "@/actions/contact";
+import { BookingPanel } from "@/components/ui/booking-panel";
+import { BOOKING_ENABLED } from "@/lib/booking";
 import { fadeInUp } from "@/lib/animations";
 import { cn } from "@/lib/utils";
+
+type ContactTab = "book" | "message";
 
 const DETAILS = [
   { icon: Mail, label: "Email", value: "hello@fig.agency", href: "mailto:hello@fig.agency" },
@@ -27,6 +31,11 @@ const DETAILS = [
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState("");
+  // Booking leads when it is available: most visitors who reach this section
+  // already know they want to talk.
+  const [tab, setTab] = useState<ContactTab>(
+    BOOKING_ENABLED ? "book" : "message"
+  );
 
   const {
     register,
@@ -120,8 +129,59 @@ export function ContactSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="lg:col-span-7"
+            className="lg:col-span-7 flex flex-col gap-4"
           >
+            {BOOKING_ENABLED && !submitted && (
+              <div
+                role="tablist"
+                aria-label="How to get in touch"
+                className="inline-flex self-start p-1 rounded-full border border-border bg-white"
+              >
+                {(
+                  [
+                    { id: "book", label: "Book a call" },
+                    { id: "message", label: "Send a message" },
+                  ] as const
+                ).map(({ id, label }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    role="tab"
+                    id={`contact-tab-${id}`}
+                    aria-selected={tab === id}
+                    aria-controls={`contact-panel-${id}`}
+                    onClick={() => setTab(id)}
+                    className={cn(
+                      "h-9 px-5 rounded-full text-[13px] font-medium transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                      tab === id
+                        ? "bg-text-primary text-white"
+                        : "text-text-secondary hover:text-text-primary"
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {BOOKING_ENABLED && tab === "book" && !submitted && (
+              <div
+                role="tabpanel"
+                id="contact-panel-book"
+                aria-labelledby="contact-tab-book"
+              >
+                <BookingPanel />
+              </div>
+            )}
+
+            <div
+              role={BOOKING_ENABLED ? "tabpanel" : undefined}
+              id="contact-panel-message"
+              aria-labelledby={
+                BOOKING_ENABLED ? "contact-tab-message" : undefined
+              }
+              hidden={BOOKING_ENABLED && tab !== "message" && !submitted}
+            >
             {submitted ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.97 }}
@@ -234,6 +294,7 @@ export function ContactSection() {
                 </div>
               </form>
             )}
+            </div>
           </motion.div>
         </div>
       </Container>
