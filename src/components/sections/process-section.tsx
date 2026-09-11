@@ -196,9 +196,6 @@ export function ProcessSection() {
                         className="object-cover"
                       />
                       <span aria-hidden className="absolute inset-0" style={{ background: CAPTION_SHADE }} />
-                      <span className="absolute top-[18px] left-7 font-heading text-[110px] lg:text-[170px] leading-[0.8] tracking-[-0.04em] text-bg-dark/35 mix-blend-multiply select-none">
-                        {step.number}
-                      </span>
                       <div className="absolute left-7 right-7 bottom-7 lg:left-8 lg:right-8 lg:bottom-8">
                         <span className="font-mono text-[10.5px] tracking-[0.12em] uppercase text-text-on-dark/70">
                           {step.when}
