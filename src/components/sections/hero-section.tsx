@@ -70,11 +70,13 @@ export function HeroSection() {
           <motion.p
             {...rise(0.3)}
             animate={mounted ? { opacity: 1, y: 0 } : {}}
-            className="max-w-[760px] text-lg leading-relaxed text-text-secondary"
+            className="max-w-none sm:max-w-[46ch] text-[15px] min-[380px]:text-base sm:text-lg leading-relaxed text-text-secondary [text-wrap:nowrap] sm:[text-wrap:balance]"
           >
-            Software, dashboards, automation, and AI where it genuinely helps.
-            We find what&apos;s slowing you down, then we build it and train
-            your team to run it.
+            {/* Fixed break on phones so the subtitle sits in two lines under the
+                two-line headline, instead of the balancer spreading it to three. */}
+            We find what&apos;s slowing you down,{" "}
+            <br className="sm:hidden" />
+            build it, and train your team to run it.
           </motion.p>
 
           <motion.div
