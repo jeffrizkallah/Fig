@@ -16,12 +16,19 @@ export function ServicesSection() {
   const handleClose = useCallback(() => setSelectedService(null), []);
 
   return (
-    <section id="services" className="py-24 md:py-32 bg-bg-secondary">
+    <section
+      id="services"
+      className="pt-24 md:pt-32 pb-32 md:pb-40 bg-bg-secondary"
+      style={{
+        backgroundImage:
+          "linear-gradient(to bottom, var(--bg-primary) 0px, var(--bg-secondary) 260px)",
+      }}
+    >
       <Container>
         <SectionHeading
           label="What We Build"
-          title="Digital solutions that work as hard as you do."
-          subtitle="From custom software to AI-powered automation, we build the tools your business needs to thrive."
+          title="What we actually build."
+          subtitle="Custom software, dashboards, automation and AI — built around the way your business already works."
         />
 
         <motion.div
@@ -56,7 +63,7 @@ export function ServicesSection() {
                   <service.icon className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-semibold text-text-primary mb-2">
+                  <h3 className="font-heading text-2xl text-text-primary mb-2">
                     {service.title}
                   </h3>
                   <p className="text-text-secondary text-sm leading-relaxed">

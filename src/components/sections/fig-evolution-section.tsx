@@ -197,7 +197,7 @@ export function FigEvolutionSection() {
               <span className="font-mono text-xs tracking-widest uppercase text-text-secondary mb-1">
                 Phase {i + 1}
               </span>
-              <h3 className="font-heading text-2xl font-bold text-text-primary">
+              <h3 className="font-heading text-3xl text-text-primary">
                 {phase.label}
               </h3>
               <p className="text-sm text-text-secondary mt-1">{phase.sub}</p>

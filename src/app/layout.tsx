@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Newsreader, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+// Headlines: a calm, Times-like serif at regular weight (the Harvey / Frontify recipe).
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
+// Body and UI: Switzer (Fontshare, ITF Free Font License), self-hosted.
+const switzer = localFont({
+  variable: "--font-switzer",
   display: "swap",
+  src: [
+    { path: "../fonts/Switzer-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/Switzer-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/Switzer-Semibold.woff2", weight: "600", style: "normal" },
+  ],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -22,17 +30,17 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://fig-xi.vercel.app"),
-  title: "Fig | Digital Transformation Agency",
+  title: "Fig | We build the tools your business is missing",
   description:
-    "We help companies digitise, modernise, and build custom digital systems to improve efficiency, drive innovation, and increase ROI.",
+    "We build the tools your business is missing. Software, dashboards, automation — and AI where it genuinely helps. Based in Portugal, working across Europe.",
   icons: {
     icon: "/Sliced Fig Logo with Cartoon Style.png",
     apple: "/Sliced Fig Logo with Cartoon Style.png",
   },
   openGraph: {
-    title: "Fig | Digital Transformation Agency",
+    title: "Fig | We build the tools your business is missing",
     description:
-      "We help companies digitise, modernise, and build custom digital systems to improve efficiency, drive innovation, and increase ROI.",
+      "We build the tools your business is missing. Software, dashboards, automation — and AI where it genuinely helps. Based in Portugal, working across Europe.",
     type: "website",
     locale: "en_GB",
     images: [
@@ -54,7 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased grain`}
+        className={`${switzer.variable} ${newsreader.variable} ${jetbrainsMono.variable} antialiased grain`}
       >
         {children}
       </body>

@@ -11,15 +11,10 @@ export async function submitContact(data: ContactFormData) {
 
   // Log the submission (replace with Resend email later)
   console.log("=== New Contact Form Submission ===");
-  console.log("Name:", parsed.data.firstName, parsed.data.lastName);
+  console.log("Name:", parsed.data.name);
   console.log("Email:", parsed.data.email);
   console.log("Company:", parsed.data.company);
-  console.log("Role:", parsed.data.role);
-  console.log("Company Website:", parsed.data.companyWebsite || "Not provided");
-  console.log("Company Size:", parsed.data.companySize);
-  console.log("Annual Revenue:", parsed.data.annualRevenue || "Not provided");
-  console.log("Project Budget:", parsed.data.projectBudget);
-  console.log("Services Interested:", parsed.data.servicesInterested);
+  console.log("Needs:", parsed.data.needs.join(", "));
   console.log("Message:", parsed.data.message || "Not provided");
   console.log("===================================");
 

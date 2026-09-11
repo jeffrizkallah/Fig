@@ -15,6 +15,8 @@ import {
   Cpu,
   ScanSearch,
   Bot,
+  Handshake,
+  Clock,
 } from "lucide-react";
 
 const AUTO_ADVANCE_MS = 5000;
@@ -87,50 +89,92 @@ function EfficiencyVisual() {
       </motion.div>
 
       {/* Before / After bars */}
-      <div className="space-y-4 flex-1 flex flex-col justify-center">
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <span className="font-mono text-[10px] text-text-secondary uppercase tracking-wider">
-              Before
-            </span>
-            <span className="text-[10px] text-accent-warm/60 bg-accent-warm/8 px-2 py-0.5 rounded-full">
-              Manual
-            </span>
-          </div>
-          <div className="relative h-9 rounded-lg bg-bg-secondary overflow-hidden">
-            <motion.div
-              className="absolute inset-y-0 left-0 rounded-lg bg-accent-warm/20"
-              initial={{ width: 0 }}
-              animate={{ width: "88%" }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 font-mono text-xs text-accent-warm font-bold">
-              3 days
-            </span>
-          </div>
-        </div>
+      <div className="flex-1 flex flex-col justify-center gap-5">
+        {[
+          {
+            stage: "Before",
+            tag: "Manual",
+            tagClass: "text-accent-warm/70 bg-accent-warm/8",
+            steps: [
+              { label: "Pull data from 12 tools", time: "6 hrs" },
+              { label: "Clean + reconcile", time: "1 day" },
+              { label: "Build the deck", time: "2 days" },
+            ],
+            barClass: "bg-accent-warm/20",
+            widths: ["70%", "85%", "100%"],
+            total: "3 days",
+            totalClass: "text-accent-warm",
+            delay: 0.2,
+          },
+          {
+            stage: "After",
+            tag: "Automated",
+            tagClass: "text-accent/70 bg-accent/8",
+            steps: [
+              { label: "Data syncs itself", time: "live" },
+              { label: "Checks run on write", time: "instant" },
+              { label: "Report generates", time: "15 min" },
+            ],
+            barClass: "bg-accent/25",
+            widths: ["8%", "6%", "14%"],
+            total: "15 min",
+            totalClass: "text-accent",
+            delay: 0.7,
+          },
+        ].map((group) => (
+          <div key={group.stage} className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] text-text-secondary uppercase tracking-wider">
+                {group.stage}
+              </span>
+              <span
+                className={`text-[10px] px-2 py-0.5 rounded-full ${group.tagClass}`}
+              >
+                {group.tag}
+              </span>
+            </div>
 
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <span className="font-mono text-[10px] text-text-secondary uppercase tracking-wider">
-              After
-            </span>
-            <span className="text-[10px] text-accent/60 bg-accent/8 px-2 py-0.5 rounded-full">
-              Automated
-            </span>
+            <div className="space-y-1.5">
+              {group.steps.map((step, i) => (
+                <motion.div
+                  key={step.label}
+                  className="flex items-center gap-2.5"
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: group.delay + i * 0.12 }}
+                >
+                  <span className="w-[104px] shrink-0 text-[10px] text-text-secondary leading-tight">
+                    {step.label}
+                  </span>
+                  <div className="relative flex-1 h-5 rounded-md bg-bg-secondary overflow-hidden">
+                    <motion.div
+                      className={`absolute inset-y-0 left-0 rounded-md ${group.barClass}`}
+                      initial={{ width: 0 }}
+                      animate={{ width: group.widths[i] }}
+                      transition={{
+                        duration: 0.7,
+                        ease: "easeOut",
+                        delay: group.delay + i * 0.12,
+                      }}
+                    />
+                  </div>
+                  <span className="w-[46px] shrink-0 text-right font-mono text-[10px] text-text-secondary">
+                    {step.time}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between border-t border-border/60 pt-1.5">
+              <span className="text-[10px] text-text-secondary">Total</span>
+              <span
+                className={`font-mono text-sm font-bold ${group.totalClass}`}
+              >
+                {group.total}
+              </span>
+            </div>
           </div>
-          <div className="relative h-9 rounded-lg bg-bg-secondary overflow-hidden">
-            <motion.div
-              className="absolute inset-y-0 left-0 rounded-lg bg-accent/25"
-              initial={{ width: 0 }}
-              animate={{ width: "12%" }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-            />
-            <span className="absolute left-[15%] top-1/2 -translate-y-1/2 font-mono text-xs text-accent font-bold">
-              15 min
-            </span>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* Big stat + mini cards */}
@@ -201,23 +245,22 @@ function EndToEndVisual() {
       </motion.div>
 
       {/* Vertical timeline */}
-      <div className="flex-1 relative pl-6 pt-3">
-        {/* Connecting line — starts and ends at dot centres */}
-        <motion.div
-          className="absolute left-[9px] w-[2px] bg-accent/30 origin-top"
-          style={{ top: 18, bottom: 34 }}
-          initial={{ scaleY: 0 }}
-          animate={{ scaleY: 1 }}
-          transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-        />
-
-        <div className="space-y-1.5">
+      <div className="flex-1 pl-6 pt-4 pb-1 flex flex-col">
+        <div className="relative flex-1 flex flex-col justify-between gap-2">
+          {/* Connecting line — starts and ends at dot centres */}
+          <motion.div
+            className="absolute left-[-15px] w-[2px] bg-accent/30 origin-top"
+            style={{ top: "10%", bottom: "10%" }}
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: 1 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+          />
           {JOURNEY_DATA.map((step, i) => {
             const isHighlighted = i === 2;
             return (
               <motion.div
                 key={step.label}
-                className="relative flex items-center"
+                className="relative flex items-center flex-1"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 + i * 0.15, duration: 0.4 }}
@@ -245,7 +288,7 @@ function EndToEndVisual() {
 
                 {/* Content */}
                 <div
-                  className={`flex-1 rounded-lg px-3 py-2 ${
+                  className={`flex-1 self-stretch flex flex-col justify-center rounded-lg px-3 py-2.5 ${
                     isHighlighted
                       ? "bg-accent/8 border border-accent/15"
                       : "bg-bg-secondary/50"
@@ -293,15 +336,17 @@ function EndToEndVisual() {
 
 /* ── Visual 2: Human + AI ────────────────────────────────── */
 const HUMAN_TASKS = [
-  { icon: Lightbulb, label: "Strategy" },
-  { icon: Target, label: "Decisions" },
-  { icon: Palette, label: "Creativity" },
+  { icon: Lightbulb, label: "Strategy", desc: "Where to focus next" },
+  { icon: Target, label: "Decisions", desc: "The final call" },
+  { icon: Palette, label: "Creativity", desc: "Ideas worth testing" },
+  { icon: Handshake, label: "Relationships", desc: "Client trust" },
 ];
 
 const AI_TASKS = [
-  { icon: Cpu, label: "Data Processing" },
-  { icon: ScanSearch, label: "Pattern Recognition" },
-  { icon: Bot, label: "Automation" },
+  { icon: Cpu, label: "Data Processing", desc: "At any volume" },
+  { icon: ScanSearch, label: "Pattern Recognition", desc: "Signals you'd miss" },
+  { icon: Bot, label: "Automation", desc: "The repeatable work" },
+  { icon: Clock, label: "Always On", desc: "Nights and weekends" },
 ];
 
 function HumanAIVisual() {
@@ -331,19 +376,24 @@ function HumanAIVisual() {
               Your Team
             </span>
           </div>
-          <div className="space-y-2 flex-1">
+          <div className="flex-1 flex flex-col justify-between gap-2">
             {HUMAN_TASKS.map((task, i) => (
               <motion.div
                 key={task.label}
-                className="flex items-center gap-2 rounded-lg bg-white/60 px-2.5 py-2 border border-accent-warm/10"
+                className="flex-1 flex items-center gap-2.5 rounded-lg bg-white/60 px-2.5 py-2 border border-accent-warm/10"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.12 }}
               >
-                <task.icon className="w-3.5 h-3.5 text-accent-warm/70" />
-                <span className="text-[11px] font-medium text-text-secondary">
-                  {task.label}
-                </span>
+                <task.icon className="w-3.5 h-3.5 shrink-0 text-accent-warm/70" />
+                <div className="min-w-0">
+                  <div className="text-[11px] font-medium text-text-primary leading-tight">
+                    {task.label}
+                  </div>
+                  <div className="text-[9px] text-text-secondary leading-tight mt-0.5">
+                    {task.desc}
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -360,19 +410,24 @@ function HumanAIVisual() {
             <BrainCircuit className="w-4 h-4 text-accent" />
             <span className="text-xs font-semibold text-accent">AI Layer</span>
           </div>
-          <div className="space-y-2 flex-1">
+          <div className="flex-1 flex flex-col justify-between gap-2">
             {AI_TASKS.map((task, i) => (
               <motion.div
                 key={task.label}
-                className="flex items-center gap-2 rounded-lg bg-white/60 px-2.5 py-2 border border-accent/10"
+                className="flex-1 flex items-center gap-2.5 rounded-lg bg-white/60 px-2.5 py-2 border border-accent/10"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 + i * 0.12 }}
               >
-                <task.icon className="w-3.5 h-3.5 text-accent/70" />
-                <span className="text-[11px] font-medium text-text-secondary">
-                  {task.label}
-                </span>
+                <task.icon className="w-3.5 h-3.5 shrink-0 text-accent/70" />
+                <div className="min-w-0">
+                  <div className="text-[11px] font-medium text-text-primary leading-tight">
+                    {task.label}
+                  </div>
+                  <div className="text-[9px] text-text-secondary leading-tight mt-0.5">
+                    {task.desc}
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -386,10 +441,12 @@ function HumanAIVisual() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
       >
-        <div className="h-[2px] w-full bg-bg-secondary rounded-full overflow-hidden">
+        <div className="relative h-[2px] w-full bg-bg-secondary rounded-full overflow-hidden">
+          {/* `left` is measured against the track, so the bar crosses the full width */}
           <motion.div
-            className="h-full w-12 rounded-full bg-gradient-to-r from-accent-warm/50 to-accent/50"
-            animate={{ x: ["-48px", "calc(100% + 48px)"] }}
+            className="absolute inset-y-0 w-12 rounded-full bg-gradient-to-r from-accent-warm/50 to-accent/50"
+            initial={{ left: "-48px" }}
+            animate={{ left: "100%" }}
             transition={{
               duration: 2,
               repeat: Infinity,
@@ -536,15 +593,34 @@ const VISUALS = [EfficiencyVisual, EndToEndVisual, HumanAIVisual, ROIVisual];
 export function WhyFigSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const pausedUntilRef = useRef(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  // Only cycle while the section is actually on screen. Running it offscreen
+  // caused the page to shift as the layout re-settled on each swap.
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.25 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isInView) return;
+
     const interval = setInterval(() => {
+      if (document.hidden) return;
       if (Date.now() > pausedUntilRef.current) {
         setActiveIndex((prev) => (prev + 1) % DIFFERENTIATORS.length);
       }
     }, AUTO_ADVANCE_MS);
     return () => clearInterval(interval);
-  }, []);
+  }, [isInView]);
 
   const handleClick = (index: number) => {
     setActiveIndex(index);
@@ -552,7 +628,7 @@ export function WhyFigSection() {
   };
 
   return (
-    <section id="about" className="py-24 md:py-32">
+    <section ref={sectionRef} id="about" className="py-24 md:py-32">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left - interactive differentiators */}
@@ -560,7 +636,7 @@ export function WhyFigSection() {
             <SectionHeading
               label="Why Fig"
               title="Built different. On purpose."
-              subtitle="We're not a consultancy that disappears after a slide deck. We build, train, and support, end to end."
+              subtitle="Most agencies hand over a slide deck and disappear. We build the thing, teach your team to run it, and stick around."
               align="left"
             />
 
@@ -597,7 +673,7 @@ export function WhyFigSection() {
                         <Icon className="w-4 h-4" />
                       </div>
                       <h3
-                        className={`font-heading text-base font-semibold transition-colors duration-300 ${
+                        className={`text-base font-semibold transition-colors duration-300 ${
                           isActive ? "text-text-primary" : "text-text-secondary"
                         }`}
                       >
@@ -605,21 +681,15 @@ export function WhyFigSection() {
                       </h3>
                     </div>
 
-                    <AnimatePresence initial={false}>
-                      {isActive && (
-                        <motion.p
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                          className="text-sm text-text-secondary leading-relaxed overflow-hidden pl-11"
-                        >
-                          <span className="block pt-2">
-                            {item.description}
-                          </span>
-                        </motion.p>
-                      )}
-                    </AnimatePresence>
+                    {/* Always mounted: animating height here would reflow the
+                        page every time the visual auto-advanced. */}
+                    <motion.p
+                      animate={{ opacity: isActive ? 1 : 0.55 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="text-sm text-text-secondary leading-relaxed pl-11"
+                    >
+                      <span className="block pt-2">{item.description}</span>
+                    </motion.p>
                   </motion.button>
                 );
               })}
@@ -634,7 +704,7 @@ export function WhyFigSection() {
             transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="relative hidden lg:block"
           >
-            <div className="relative min-h-[440px] max-w-md mx-auto">
+            <div className="relative min-h-[540px] xl:min-h-[580px] max-w-md mx-auto">
               {/* Layered card frame */}
               <div className="absolute inset-0 rounded-3xl bg-bg-secondary border border-border" />
               <div className="absolute inset-3 rounded-2xl bg-white border border-border shadow-sm" />

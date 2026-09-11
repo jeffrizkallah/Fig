@@ -12,8 +12,11 @@
   --accent: #4A7C59;
   --accent-hover: #3D6B4A;
   --accent-warm: #C4956A;
+  --accent-soft: #7FB08C;
   --border: #E5E5DF;
   --border-dark: #2A2A2A;
+  --bg-manila: #EEECE3;
+  --ease-fig: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 @theme inline {
@@ -28,10 +31,12 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-warm: var(--accent-warm);
+  --color-accent-soft: var(--accent-soft);
   --color-border: var(--border);
   --color-border-dark: var(--border-dark);
-  --font-sans: var(--font-inter);
-  --font-heading: var(--font-space-grotesk);
+  --color-bg-manila: var(--bg-manila);
+  --font-sans: var(--font-switzer);
+  --font-heading: var(--font-newsreader);
   --font-mono: var(--font-jetbrains-mono);
 }
 
@@ -58,6 +63,11 @@ body {
   background-size: 256px 256px;
   transform: translateZ(0);
   backface-visibility: hidden;
+}
+
+/* Headline face: Newsreader, slightly tightened (Harvey-like). Weight stays regular via inheritance. */
+.font-heading {
+  letter-spacing: -0.015em;
 }
 
 /* Smooth scroll offset for sticky header */
@@ -104,4 +114,203 @@ section[id] {
   10% { opacity: 1; }
   90% { opacity: 1; }
   100% { left: 100%; opacity: 0; }
+}
+
+/* ---------- Case studies: folders, travelling sheet, modal ---------- */
+.case-folder {
+  box-shadow: 0 1px 2px rgba(26, 26, 26, 0.03), 0 16px 36px -24px rgba(26, 26, 26, 0.2);
+  transition: transform 0.55s var(--ease-fig), box-shadow 0.55s var(--ease-fig);
+}
+.case-folder:hover,
+.case-folder:has(:focus-visible),
+.case-folder[data-state="opening"] {
+  transform: translateY(-10px);
+  box-shadow: 0 2px 4px rgba(26, 26, 26, 0.04), 0 36px 56px -28px rgba(26, 26, 26, 0.3);
+}
+.case-folder:has(:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.case-sheet {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  top: 10px;
+  bottom: -70px;
+  background: #fff;
+  border: 1px solid rgba(26, 26, 26, 0.06);
+  border-radius: 10px 10px 0 0;
+  padding: 16px 18px;
+  box-shadow: 0 -8px 26px -16px rgba(26, 26, 26, 0.28);
+  transition: transform 0.6s var(--ease-fig), opacity 0.25s var(--ease-fig);
+}
+.case-sheet.b1 { transform: translate(-10px, 6px) rotate(-2.5deg); }
+.case-sheet.b2 { transform: translate(12px, 10px) rotate(2.5deg); }
+.case-sheet.b1 > *,
+.case-sheet.b2 > * { color: var(--text-secondary); opacity: 0.5; }
+
+.case-folder:hover .case-sheet.front,
+.case-folder:has(:focus-visible) .case-sheet.front { transform: translateY(-18px); }
+.case-folder:hover .case-sheet.b1,
+.case-folder:has(:focus-visible) .case-sheet.b1 { transform: translate(-18px, -8px) rotate(-5deg); }
+.case-folder:hover .case-sheet.b2,
+.case-folder:has(:focus-visible) .case-sheet.b2 { transform: translate(20px, -4px) rotate(5deg); }
+
+/* frosted glass pocket */
+.case-flap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 18px 26px 24px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.32), rgba(238, 236, 227, 0.74) 45%, rgba(232, 229, 218, 0.96));
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+  backdrop-filter: blur(12px) saturate(1.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 18px 18px 0 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 -14px 30px -22px rgba(26, 26, 26, 0.25);
+  transition: transform 0.5s var(--ease-fig), opacity 0.4s var(--ease-fig);
+}
+.case-flap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(74, 124, 89, 0.05), rgba(74, 124, 89, 0.15));
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-fig);
+}
+.case-folder:hover .case-flap::after,
+.case-folder:has(:focus-visible) .case-flap::after { opacity: 1; }
+.case-arrow { transition: transform 0.5s var(--ease-fig), background-color 0.3s; }
+.case-folder:hover .case-arrow { transform: translateX(4px); background-color: var(--accent); }
+
+/* opening: the pocket settles, the back sheets tuck in, the front sheet rises while the story comes up from below */
+.case-folder[data-state="opening"] .case-flap { transform: translateY(8px); opacity: 0.75; }
+.case-folder[data-state="opening"] .case-sheet.b1 { transform: translate(-4px, 34px) rotate(-1deg); opacity: 0; }
+.case-folder[data-state="opening"] .case-sheet.b2 { transform: translate(6px, 34px) rotate(1deg); opacity: 0; }
+.case-folder[data-state="opening"] .case-sheet.front { transform: translateY(-46px); }
+
+/* modal content rises in once the sheet has landed */
+.case-panel .reveal { opacity: 0; transform: translateY(10px); }
+.case-panel.is-in .reveal { opacity: 1; transform: none; transition: opacity 0.5s var(--ease-fig), transform 0.6s var(--ease-fig); }
+.case-panel.is-in .reveal:nth-child(2) { transition-delay: 0.06s; }
+.case-panel.is-in .reveal:nth-child(3) { transition-delay: 0.12s; }
+.case-panel.is-in .reveal:nth-child(4) { transition-delay: 0.18s; }
+.case-panel.is-in .reveal:nth-child(5) { transition-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .case-folder, .case-sheet, .case-flap, .case-flap::after, .case-arrow, .case-panel .reveal { transition-duration: 0s; }
+}
+
+/* Discreet hairline scrollbar: no arrow buttons, thin thumb, visible only on hover.
+   NOTE: `scrollbar-color` must NOT be set for WebKit/Blink — setting it makes Chrome
+   fall back to the standard scrollbar renderer and ignore every ::-webkit-scrollbar
+   rule below (which is what brings back the fat bar with the arrow buttons).
+   Firefox, which has no ::-webkit-* support, gets it via the @supports guard. */
+.scroll-subtle::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background: transparent;
+}
+.scroll-subtle::-webkit-scrollbar-track,
+.scroll-subtle::-webkit-scrollbar-track-piece,
+.scroll-subtle::-webkit-scrollbar-corner {
+  background: transparent;
+  border: 0;
+}
+/* Remove the up/down arrow buttons at both ends */
+.scroll-subtle::-webkit-scrollbar-button,
+.scroll-subtle::-webkit-scrollbar-button:start,
+.scroll-subtle::-webkit-scrollbar-button:end,
+.scroll-subtle::-webkit-scrollbar-button:vertical:start:decrement,
+.scroll-subtle::-webkit-scrollbar-button:vertical:end:increment,
+.scroll-subtle::-webkit-scrollbar-button:horizontal:start:decrement,
+.scroll-subtle::-webkit-scrollbar-button:horizontal:end:increment {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent;
+}
+.scroll-subtle::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 999px;
+  transition: background-color 0.25s ease;
+}
+.scroll-subtle:hover::-webkit-scrollbar-thumb,
+.scroll-subtle:focus-within::-webkit-scrollbar-thumb {
+  background-color: rgba(26, 26, 26, 0.13);
+}
+.scroll-subtle::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(26, 26, 26, 0.22);
+}
+
+/* Firefox only: it ignores ::-webkit-* and has no arrow buttons on `thin` anyway. */
+@supports (scrollbar-width: thin) and (not selector(::-webkit-scrollbar)) {
+  .scroll-subtle {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.25s ease;
+  }
+  .scroll-subtle:hover,
+  .scroll-subtle:focus-within {
+    scrollbar-color: rgba(26, 26, 26, 0.18) transparent;
+  }
+}
+
+/* Inset the thumb slightly from the panel edge so it floats rather than sticking to it */
+.scroll-subtle::-webkit-scrollbar-thumb {
+  border-right: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Page scrollbar: same discreet hairline treatment as the modals.
+   Kept faintly visible at rest (not transparent like .scroll-subtle) so the
+   whole-page scroll position stays readable, darkening on hover. */
+html::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: transparent;
+}
+html::-webkit-scrollbar-track,
+html::-webkit-scrollbar-track-piece,
+html::-webkit-scrollbar-corner {
+  background: transparent;
+  border: 0;
+}
+html::-webkit-scrollbar-button,
+html::-webkit-scrollbar-button:start,
+html::-webkit-scrollbar-button:end,
+html::-webkit-scrollbar-button:vertical:start:decrement,
+html::-webkit-scrollbar-button:vertical:end:increment,
+html::-webkit-scrollbar-button:horizontal:start:decrement,
+html::-webkit-scrollbar-button:horizontal:end:increment {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent;
+}
+html::-webkit-scrollbar-thumb {
+  background-color: rgba(26, 26, 26, 0.11);
+  border-radius: 999px;
+  border-right: 1px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.25s ease;
+}
+html::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(26, 26, 26, 0.22);
+}
+
+@supports (scrollbar-width: thin) and (not selector(::-webkit-scrollbar)) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(26, 26, 26, 0.16) transparent;
+  }
 }

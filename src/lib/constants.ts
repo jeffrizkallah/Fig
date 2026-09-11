@@ -21,6 +21,8 @@ export const NAV_ITEMS = [
   { label: "Services", href: "#services" },
   { label: "Process", href: "#process" },
   { label: "About", href: "#about" },
+  { label: "Work", href: "#work" },
+  { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
@@ -177,6 +179,12 @@ export interface ProcessStep {
   title: string;
   description: string;
   icon: LucideIcon;
+  /** How long this step usually takes */
+  when: string;
+  /** What the client has in hand at the end of it */
+  deliverable: string;
+  /** Photo shown while this step is active, under /public */
+  image: string;
 }
 
 export const PROCESS_STEPS: ProcessStep[] = [
@@ -185,70 +193,51 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: "Chat",
     icon: MessageCircle,
     description:
-      "We start with a conversation about your business, your goals, your challenges, and where things feel stuck.",
+      "A real conversation, not a sales call. What you do, what's slow, and what's quietly driving your team mad. We'll tell you honestly whether we can help.",
+    when: "Week 1",
+    deliverable: "A 30-minute call, then a one-page summary of what we heard.",
+    image: "/process/01-chat-v3.jpg",
   },
   {
     number: "02",
     title: "Audit",
     icon: Search,
     description:
-      "We deep-dive into your current systems and workflows, identifying what can be improved, modernised, or digitised.",
+      "We follow the work. Where it stalls, where it's typed twice, where it sits in someone's inbox. Then we show you the handful of things worth building — and the ones that aren't.",
+    when: "Weeks 1–2",
+    deliverable: "A written audit with a prioritised list of what to fix first.",
+    image: "/process/02-audit-v3.jpg",
   },
   {
     number: "03",
     title: "Build",
     icon: Wrench,
     description:
-      "We design and develop custom digital solutions tailored to your specific needs and processes.",
+      "Then we build it. Properly, around the systems you already use. You'll see something working in weeks, not at the end.",
+    when: "Weeks 3–10",
+    deliverable: "Working software, in your hands every week, not at the end.",
+    image: "/process/03-build-v3.jpg",
   },
   {
     number: "04",
     title: "Train",
     icon: GraduationCap,
     description:
-      "We upskill your team through hands-on courses and documentation so they feel confident with the new systems.",
+      "We sit with your team until it clicks. No 40-page manual nobody reads. By the end they're not using a new tool — they're just working.",
+    when: "Final week",
+    deliverable: "Confident people and a manual they will actually open.",
+    image: "/process/04-train-v3.jpg",
   },
   {
     number: "05",
     title: "Support",
     icon: LifeBuoy,
     description:
-      "We stay with you, providing ongoing support, iteration, and optimisation as your business evolves.",
+      "We don't hand it over and vanish. We stay, fix what needs fixing, and keep improving it as the business changes.",
+    when: "Ongoing",
+    deliverable: "A direct line to us and a monthly check-in.",
+    image: "/process/05-support-v3.jpg",
   },
-];
-
-export const COMPANY_SIZE_OPTIONS = [
-  { value: "1-5", label: "1–5 employees" },
-  { value: "6-15", label: "6–15 employees" },
-  { value: "16-50", label: "16–50 employees" },
-  { value: "51-100", label: "51–100 employees" },
-  { value: "100+", label: "100+ employees" },
-];
-
-export const ANNUAL_REVENUE_OPTIONS = [
-  { value: "under-100k", label: "Under $100K" },
-  { value: "100k-250k", label: "$100K – $250K" },
-  { value: "250k-500k", label: "$250K – $500K" },
-  { value: "500k-1m", label: "$500K – $1M" },
-  { value: "1m+", label: "$1M+" },
-];
-
-export const PROJECT_BUDGET_OPTIONS = [
-  { value: "under-2k", label: "Under $2K" },
-  { value: "2k-5k", label: "$2K – $5K" },
-  { value: "5k-10k", label: "$5K – $10K" },
-  { value: "10k-25k", label: "$10K – $25K" },
-  { value: "25k+", label: "$25K+" },
-];
-
-export const SERVICES_INTEREST_OPTIONS = [
-  { value: "custom-software", label: "Custom Software" },
-  { value: "intelligent-dashboards", label: "Intelligent Dashboards" },
-  { value: "ai-solutions", label: "AI Solutions" },
-  { value: "system-integration", label: "System Integration" },
-  { value: "workflow-automation", label: "Workflow Automation" },
-  { value: "websites", label: "Websites" },
-  { value: "not-sure", label: "Not sure yet" },
 ];
 
 export interface Differentiator {
@@ -259,27 +248,27 @@ export interface Differentiator {
 
 export const DIFFERENTIATORS: Differentiator[] = [
   {
-    title: "Efficiency First",
+    title: "We take work away",
     icon: Zap,
     description:
-      "We obsess over removing friction from your daily operations. Every system we build saves you time.",
+      "Every tool we build has one job: give your team back hours they're currently losing. If it adds a step, we've built it wrong.",
   },
   {
-    title: "End-to-End",
+    title: "No handover, no vanishing act",
     icon: ArrowRight,
     description:
-      "From the first conversation to ongoing support, we're with you at every stage, not just a handoff.",
+      "We're not consultants who leave you a strategy deck. We build it, and we're still here after it launches.",
   },
   {
-    title: "Human + AI",
+    title: "Your team gets faster. Nobody gets replaced.",
     icon: Users,
     description:
-      "We build solutions that augment your team, not replace them. Technology should empower, not complicate.",
+      "We build tools that take the boring half of the job, so your people can be better at the half that actually matters.",
   },
   {
-    title: "ROI-Driven",
+    title: "The right tool, not the trendy one",
     icon: TrendingUp,
     description:
-      "Every system we build earns its keep. We measure success by the time you save and the value you gain.",
+      "We'd rather talk you out of something than sell you a system you don't need. If it doesn't save you real hours, we shouldn't be building it.",
   },
 ];

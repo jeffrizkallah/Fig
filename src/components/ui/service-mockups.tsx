@@ -145,7 +145,7 @@ function KpiDashboardMockup({ className }: MockupProps) {
               <div className="text-[7px] text-text-secondary/50 uppercase tracking-wider">
                 {kpi.label}
               </div>
-              <div className="text-[11px] font-semibold text-text-primary/80 font-heading">
+              <div className="text-[11px] font-semibold text-text-primary/80">
                 {kpi.value}
               </div>
               <div className="text-[8px] text-accent font-medium">
@@ -194,7 +194,7 @@ function InvoiceExtractionMockup({ className }: MockupProps) {
           />
           {/* Header */}
           <div className="flex items-center justify-between mb-2.5">
-            <div className="text-[10px] font-semibold text-text-primary/70 font-heading">
+            <div className="text-[10px] font-semibold text-text-primary/70">
               INVOICE
             </div>
             <div className="text-[8px] text-text-secondary/40">
@@ -389,7 +389,7 @@ function SystemIntegrationMockup({ className }: MockupProps) {
                 y={src.y + 17}
                 textAnchor="middle"
                 fontSize="10"
-                fontFamily="var(--font-heading)"
+                fontFamily="var(--font-sans)"
                 fill="var(--text-secondary)"
                 opacity="0.7"
               >
@@ -429,7 +429,7 @@ function SystemIntegrationMockup({ className }: MockupProps) {
             y="69"
             textAnchor="middle"
             fontSize="8"
-            fontFamily="var(--font-heading)"
+            fontFamily="var(--font-sans)"
             fill="var(--accent)"
             fontWeight="600"
           >
@@ -474,7 +474,7 @@ function SystemIntegrationMockup({ className }: MockupProps) {
             y="60"
             textAnchor="middle"
             fontSize="9"
-            fontFamily="var(--font-heading)"
+            fontFamily="var(--font-sans)"
             fill="var(--accent)"
             fontWeight="600"
             opacity="0.7"
@@ -486,7 +486,7 @@ function SystemIntegrationMockup({ className }: MockupProps) {
             y="74"
             textAnchor="middle"
             fontSize="9"
-            fontFamily="var(--font-heading)"
+            fontFamily="var(--font-sans)"
             fill="var(--accent)"
             fontWeight="600"
             opacity="0.7"

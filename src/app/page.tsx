@@ -3,6 +3,14 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/sections/hero-section";
 
+const ProblemSection = dynamic(
+  () =>
+    import("@/components/sections/problem-section").then(
+      (mod) => mod.ProblemSection
+    ),
+  { ssr: true }
+);
+
 const ServicesSection = dynamic(
   () =>
     import("@/components/sections/services-section").then(
@@ -27,6 +35,28 @@ const WhyFigSection = dynamic(
   { ssr: true }
 );
 
+const CaseStudiesSection = dynamic(
+  () =>
+    import("@/components/sections/case-studies-section").then(
+      (mod) => mod.CaseStudiesSection
+    ),
+  { ssr: true }
+);
+
+const FaqSection = dynamic(
+  () =>
+    import("@/components/sections/faq-section").then((mod) => mod.FaqSection),
+  { ssr: true }
+);
+
+const FinalCtaSection = dynamic(
+  () =>
+    import("@/components/sections/final-cta-section").then(
+      (mod) => mod.FinalCtaSection
+    ),
+  { ssr: true }
+);
+
 const ContactSection = dynamic(
   () =>
     import("@/components/sections/contact-section").then(
@@ -41,9 +71,13 @@ export default function Home() {
       <Header />
       <main>
         <HeroSection />
+        <ProblemSection />
         <ServicesSection />
         <ProcessSection />
         <WhyFigSection />
+        <CaseStudiesSection />
+        <FaqSection />
+        <FinalCtaSection />
         <ContactSection />
       </main>
       <Footer />

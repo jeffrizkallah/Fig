@@ -78,7 +78,7 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
           {/* Modal */}
           <motion.div
             key="modal-panel"
-            className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-white rounded-2xl border border-border shadow-2xl z-[10001]"
+            className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto scroll-subtle bg-white rounded-2xl border border-border shadow-2xl z-[10001]"
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: 6 }}
@@ -109,7 +109,7 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
                   <service.icon className="w-7 h-7" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-2xl font-bold text-text-primary">
+                  <h3 className="font-heading text-3xl text-text-primary">
                     {service.title}
                   </h3>
                   <p className="text-text-secondary text-sm mt-1">
@@ -130,7 +130,7 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
 
               {/* Features */}
               <div className="mb-6">
-                <h4 className="font-heading text-sm font-semibold text-text-primary uppercase tracking-wider mb-3">
+                <h4 className="text-sm font-semibold text-text-primary uppercase tracking-wider mb-3">
                   Key Capabilities
                 </h4>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">

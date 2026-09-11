@@ -1,222 +1,242 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { motion } from "motion/react";
 import { Container } from "@/components/ui/container";
-import { SectionHeading } from "@/components/ui/section-heading";
 import { PROCESS_STEPS } from "@/lib/constants";
-import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { fadeInUp } from "@/lib/animations";
+import { cn } from "@/lib/utils";
 
-const AUTO_ADVANCE_MS = 4000;
-const PAUSE_AFTER_CLICK_MS = 10000;
+const LAST = PROCESS_STEPS.length - 1;
+
+// Under the caption the photo darkens so the text stays readable whatever the picture.
+const CAPTION_SHADE =
+  "linear-gradient(to top, rgba(18,27,22,0.82) 0%, rgba(18,27,22,0.45) 32%, rgba(18,27,22,0) 62%)";
+
+const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 
 export function ProcessSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const pausedUntilRef = useRef(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
+  const squareRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const [active, setActive] = useState(0);
+  const [fill, setFill] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (Date.now() > pausedUntilRef.current) {
-        setActiveIndex((prev) => (prev + 1) % PROCESS_STEPS.length);
-      }
-    }, AUTO_ADVANCE_MS);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleStepClick = (index: number) => {
-    setActiveIndex(index);
-    pausedUntilRef.current = Date.now() + PAUSE_AFTER_CLICK_MS;
+  // Where the pinned block sits relative to its scroll track: 0 at the first step, 1 at the last.
+  const geometry = () => {
+    const track = trackRef.current!;
+    const pinH = pinRef.current!.offsetHeight;
+    const rect = track.getBoundingClientRect();
+    const top = (window.innerHeight - pinH) / 2;
+    const total = track.offsetHeight - pinH;
+    return { rect, top, total };
   };
 
-  const activeStep = PROCESS_STEPS[activeIndex];
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      if (!trackRef.current || !pinRef.current) return;
+      const { rect, top, total } = geometry();
+      const p = clamp01((top - rect.top) / total);
+      const first = squareRefs.current[0];
+      const last = squareRefs.current[LAST];
+      if (first && last) {
+        const span = last.getBoundingClientRect().top - first.getBoundingClientRect().top;
+        setFill(p * span);
+      }
+      setActive(Math.round(p * LAST));
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const goTo = (k: number) => {
+    const { rect, top, total } = geometry();
+    window.scrollTo({
+      top: window.scrollY + rect.top - top + (k / LAST) * total + 1,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <section
       id="process"
-      className="py-24 md:py-32 bg-bg-dark overflow-hidden"
+      className="pt-24 md:pt-32 [--pinH:88svh] lg:[--pinH:min(76vh,640px)]"
+      style={{
+        backgroundImage:
+          "linear-gradient(to bottom, var(--bg-secondary) 0px, var(--bg-primary) 240px)",
+      }}
     >
       <Container>
-        <SectionHeading
-          label="How We Work"
-          title="From conversation to transformation."
-          subtitle="A clear, structured process so you always know what's happening and what's next."
-          dark
-        />
-
         <motion.div
-          variants={staggerContainer}
+          variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12 items-end mb-10"
         >
-          {/* Stepper row */}
-          <motion.div variants={fadeInUp} className="relative mb-10 md:mb-12">
-            {/* Connecting line (behind nodes) */}
-            <div className="absolute top-5 left-0 right-0 hidden md:block">
-              <div className="mx-auto max-w-3xl relative h-[2px]">
-                {/* Background line */}
-                <div className="absolute inset-0 bg-border-dark/60 rounded-full" />
-                {/* Progress fill */}
-                <motion.div
-                  className="absolute inset-y-0 left-0 bg-accent/50 rounded-full"
-                  animate={{
-                    width: `${(activeIndex / (PROCESS_STEPS.length - 1)) * 100}%`,
-                  }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
+          <div>
+            <span className="block font-mono text-[11px] tracking-[0.16em] uppercase text-accent-hover mb-4">
+              How we work
+            </span>
+            <h2 className="font-heading text-4xl md:text-5xl leading-[1.05] text-text-primary text-balance">
+              We show up, we build, and we stay.
+            </h2>
+          </div>
+          <p className="text-lg leading-relaxed text-text-secondary max-w-md lg:justify-self-end">
+            Five steps. You always know what&apos;s happening and what&apos;s
+            next. Keep scrolling and each one comes into focus.
+          </p>
+        </motion.div>
+
+        {/* The track is tall; the block inside it pins while the track scrolls past. */}
+        <div ref={trackRef} className="relative h-[calc(var(--pinH)+4*62vh+10vh)]">
+          <div
+            ref={pinRef}
+            className="sticky top-[calc((100vh-var(--pinH))/2)] h-[var(--pinH)]"
+          >
+            <div className="grid h-full grid-cols-1 grid-rows-[46%_1fr] gap-4 lg:grid-cols-[5fr_7fr] lg:grid-rows-1 lg:gap-14">
+              {/* Steps and rail */}
+              <div className="relative flex flex-col justify-between h-full order-2 lg:order-1">
+                <span aria-hidden className="absolute left-4 top-[17px] bottom-[17px] w-[2px] rounded-full bg-border" />
+                <span
+                  aria-hidden
+                  className="absolute left-4 top-[17px] w-[2px] rounded-full bg-accent transition-[height] duration-200 ease-linear"
+                  style={{ height: fill }}
                 />
-              </div>
-            </div>
-
-            {/* Nodes */}
-            <div className="flex justify-between items-start max-w-3xl mx-auto relative">
-              {PROCESS_STEPS.map((step, index) => {
-                const isActive = index === activeIndex;
-                const isPast = index < activeIndex;
-                const Icon = step.icon;
-
-                return (
-                  <button
-                    key={step.number}
-                    onClick={() => handleStepClick(index)}
-                    className="flex flex-col items-center gap-2 md:gap-3 group relative z-10 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-dark rounded-lg"
-                  >
-                    {/* Node circle */}
-                    <div className="relative">
-                      <motion.div
-                        className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${
-                          isActive
-                            ? "bg-accent border-accent"
-                            : isPast
-                              ? "bg-accent/20 border-accent/40"
-                              : "bg-bg-dark border-border-dark/60 group-hover:border-accent/30"
-                        }`}
-                        animate={
-                          isActive ? { scale: [1, 1.1, 1] } : { scale: 1 }
+                {PROCESS_STEPS.map((step, i) => {
+                  const on = i === active;
+                  const done = i < active;
+                  return (
+                    <div
+                      key={step.number}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${step.title}, step ${i + 1} of ${PROCESS_STEPS.length}`}
+                      aria-current={on ? "step" : undefined}
+                      onClick={() => goTo(i)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          goTo(i);
                         }
-                        transition={
-                          isActive
-                            ? {
-                                duration: 2,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                              }
-                            : { duration: 0.3 }
-                        }
-                      >
-                        <Icon
-                          className={`w-3.5 h-3.5 md:w-4 md:h-4 transition-colors duration-300 ${
-                            isActive
-                              ? "text-white"
-                              : isPast
-                                ? "text-accent"
-                                : "text-text-on-dark-muted group-hover:text-text-on-dark"
-                          }`}
-                        />
-                      </motion.div>
-
-                      {/* Auto-advance ring indicator */}
-                      {isActive && (
-                        <svg
-                          className="absolute -inset-1 w-[calc(100%+8px)] h-[calc(100%+8px)]"
-                          viewBox="0 0 44 44"
+                      }}
+                      className="group grid grid-cols-[34px_1fr] gap-[18px] cursor-pointer rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg-primary"
+                    >
+                      <span className="relative z-[1] block">
+                        <span
+                          ref={(el) => {
+                            squareRefs.current[i] = el;
+                          }}
+                          className={cn(
+                            "grid place-items-center w-[34px] h-[34px] rounded-[9px] font-mono text-xs border transition-[background-color,color,border-color,transform] duration-300",
+                            on
+                              ? "bg-accent border-accent text-white scale-[1.08]"
+                              : done
+                                ? "bg-bg-manila border-transparent text-text-primary"
+                                : "bg-bg-primary border-border text-text-secondary"
+                          )}
                         >
-                          <motion.circle
-                            cx="22"
-                            cy="22"
-                            r="20"
-                            fill="none"
-                            stroke="var(--accent)"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeDasharray="125.6"
-                            strokeDashoffset="125.6"
-                            key={`ring-${activeIndex}`}
-                            animate={{ strokeDashoffset: 0 }}
-                            transition={{
-                              duration: AUTO_ADVANCE_MS / 1000,
-                              ease: "linear",
-                            }}
-                            style={{
-                              transform: "rotate(-90deg)",
-                              transformOrigin: "center",
-                            }}
-                          />
-                        </svg>
-                      )}
+                          {step.number}
+                        </span>
+                      </span>
+                      <span className="pt-1">
+                        <h3
+                          className={cn(
+                            "font-heading text-[22px] lg:text-[26px] leading-[1.1] transition-colors duration-300 group-hover:text-text-primary",
+                            on ? "text-text-primary" : "text-text-secondary"
+                          )}
+                        >
+                          {step.title}
+                        </h3>
+                        <p
+                          className={cn(
+                            "mt-1.5 text-[14.5px] leading-normal text-text-secondary max-w-[38ch] transition-opacity duration-300 lg:block",
+                            on ? "block opacity-100" : "hidden lg:opacity-55"
+                          )}
+                        >
+                          {step.description}
+                        </p>
+                      </span>
                     </div>
+                  );
+                })}
+              </div>
 
-                    {/* Label */}
-                    <div className="flex flex-col items-center">
-                      <span
-                        className={`font-mono text-[10px] md:text-xs transition-colors duration-300 ${
-                          isActive
-                            ? "text-accent"
-                            : isPast
-                              ? "text-accent/60"
-                              : "text-text-on-dark-muted/60 group-hover:text-text-on-dark-muted"
-                        }`}
-                      >
+              {/* One picture per step */}
+              <div className="relative h-full rounded-[22px] overflow-hidden text-text-on-dark order-1 lg:order-2">
+                {PROCESS_STEPS.map((step, i) => {
+                  const on = i === active;
+                  return (
+                    <div
+                      key={step.number}
+                      aria-hidden={!on}
+                      className={cn(
+                        "absolute inset-0 transition-[opacity,transform] duration-700 ease-out",
+                        on ? "opacity-100 scale-100" : "opacity-0 scale-[1.04]"
+                      )}
+                    >
+                      <Image
+                        src={step.image}
+                        alt=""
+                        fill
+                        sizes="(min-width: 1024px) 700px, 100vw"
+                        quality={88}
+                        className="object-cover"
+                      />
+                      <span aria-hidden className="absolute inset-0" style={{ background: CAPTION_SHADE }} />
+                      <span className="absolute top-[18px] left-7 font-heading text-[110px] lg:text-[170px] leading-[0.8] tracking-[-0.04em] text-bg-dark/35 mix-blend-multiply select-none">
                         {step.number}
                       </span>
-                      <span
-                        className={`hidden md:block text-xs md:text-sm font-medium transition-colors duration-300 ${
-                          isActive
-                            ? "text-text-on-dark"
-                            : isPast
-                              ? "text-text-on-dark-muted"
-                              : "text-text-on-dark-muted/60 group-hover:text-text-on-dark-muted"
-                        }`}
-                      >
-                        {step.title}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </motion.div>
-
-          {/* Content panel */}
-          <motion.div variants={fadeInUp}>
-            <div className="max-w-3xl mx-auto">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIndex}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="bg-bg-dark-lighter rounded-2xl p-6 md:p-8 border border-border-dark/50 relative overflow-hidden"
-                >
-                  {/* Accent top border */}
-                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
-
-                  <div className="flex items-start gap-4 md:gap-5">
-                    {/* Icon */}
-                    <div className="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
-                      <activeStep.icon className="w-5 h-5 md:w-6 md:h-6 text-accent" />
-                    </div>
-
-                    {/* Text */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="font-mono text-xs text-accent/70">
-                          {activeStep.number}
+                      <div className="absolute left-7 right-7 bottom-7 lg:left-8 lg:right-8 lg:bottom-8">
+                        <span className="font-mono text-[10.5px] tracking-[0.12em] uppercase text-text-on-dark/70">
+                          {step.when}
                         </span>
-                        <h3 className="font-heading text-xl md:text-2xl font-bold text-text-on-dark">
-                          {activeStep.title}
-                        </h3>
+                        <strong className="block mt-2.5 font-heading font-normal text-[20px] lg:text-[26px] leading-[1.2] tracking-[-0.01em] max-w-[24ch]">
+                          {step.deliverable}
+                        </strong>
                       </div>
-                      <p className="text-text-on-dark-muted leading-relaxed">
-                        {activeStep.description}
-                      </p>
                     </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+                  );
+                })}
+                <div className="absolute top-[22px] right-6 flex gap-1.5" aria-hidden>
+                  {PROCESS_STEPS.map((step, i) => (
+                    <span
+                      key={step.number}
+                      className={cn(
+                        "w-[22px] h-[3px] rounded-full transition-colors duration-300",
+                        i <= active ? "bg-text-on-dark" : "bg-text-on-dark/30"
+                      )}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
+
+        <div className="pt-8 pb-24 md:pb-32 flex flex-col sm:flex-row sm:justify-between gap-2 text-[13px] text-text-secondary">
+          <span>
+            A typical project runs{" "}
+            <b className="font-medium text-text-primary">8 to 12 weeks</b> from the first call to
+            handover.
+          </span>
+          <span>
+            You talk to <b className="font-medium text-text-primary">one person</b> the whole way
+            through.
+          </span>
+        </div>
       </Container>
     </section>
   );

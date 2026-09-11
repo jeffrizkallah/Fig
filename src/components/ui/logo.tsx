@@ -18,7 +18,7 @@ export function Logo({ className, dark = false }: { className?: string; dark?: b
       />
       <span
         className={cn(
-          "font-heading text-xl font-bold tracking-tight",
+          "font-heading text-[22px] font-medium",
           dark ? "text-text-on-dark" : "text-text-primary"
         )}
       >
